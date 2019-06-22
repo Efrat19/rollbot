@@ -1,0 +1,23 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: slackapp
+spec:
+  selector:
+    matchLabels:
+      app: slackapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: slackapp
+    spec:
+      containers:
+      - name: master
+        image: efrat19/slackapp
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        ports:
+        - containerPort: 5000
