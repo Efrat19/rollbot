@@ -48,15 +48,32 @@ app.post('/command', (req, res) => {
   const { text, trigger_id } = req.body;
   // Verify the signing secret
   if (signature.isVerified(req)) {
-
-    const namespaces = ['the-face','ns'];
-    if(namespaces.includes(text))
-    {
-      res.send('nailed it!');
-    }
-    else{
-      res.send(K8s.getNamespaces());
-    }
+    const workloads = ['wl1','wl2'];
+        const options = workloads.map(wl => {
+            return {
+                text: wl,
+                value: wl
+            };
+        })
+        return {
+            "text": "workload selection",
+            "attachments": [
+                {
+                    "text": "available workloads are:",
+                    "fallback": "workload selection fallback",
+                    "color": "#3AA3E3",
+                    "callback_id": "wl_selection",
+                    "actions": [
+                        {
+                            options,
+                            "name": "wls_list",
+                            "text": "choose a workload",
+                            "type": "select"
+                        }
+                    ]
+                }
+            ]
+        }
 
   } else {
     debug('Verification token mismatch');
