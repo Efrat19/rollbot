@@ -7,9 +7,8 @@ const qs = require('querystring');
 const ticket = require('./ticket');
 const signature = require('./verifySignature');
 const debug = require('debug')('slash-command-template:index');
-const K8s = require('./K8s');
 const apiUrl = 'https://slack.com/api';
-var morgan = require('morgan');
+const morgan = require('morgan');
 const exec = require('exec');
 const app = express();
 app.use(morgan('combined'));
@@ -77,7 +76,7 @@ app.post('/command', (req, res) => {
             ]
         });
       })
-    
+
 
   } else {
     debug('Verification token mismatch');
