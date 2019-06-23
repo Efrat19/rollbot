@@ -10,7 +10,7 @@ const debug = require('debug')('slash-command-template:index');
 const K8s = require('./K8s');
 const apiUrl = 'https://slack.com/api';
 var morgan = require('morgan');
-
+const exec = require('exec');
 const app = express();
 app.use(morgan('combined'));
 
@@ -48,7 +48,9 @@ app.post('/command', (req, res) => {
   const { text, trigger_id } = req.body;
   // Verify the signing secret
   if (signature.isVerified(req)) {
-    const workloads = ['wl1','wl2'];
+    exec("fluxctl list-workloads |  awk '{print $1}'",function(err,stdout,sterr){
+      const workloads = stdout.split('\n');
+      workloads.shift();
         const options = workloads.map(wl => {
             return {
                 text: wl,
@@ -74,6 +76,8 @@ app.post('/command', (req, res) => {
                 }
             ]
         });
+      })
+    
 
   } else {
     debug('Verification token mismatch');
