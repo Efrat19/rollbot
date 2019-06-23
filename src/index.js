@@ -55,7 +55,7 @@ app.post('/command', (req, res) => {
                 value: wl
             };
         })
-        return {
+        return res.send({
             "text": "workload selection",
             "attachments": [
                 {
@@ -73,7 +73,7 @@ app.post('/command', (req, res) => {
                     ]
                 }
             ]
-        }
+        });
 
   } else {
     debug('Verification token mismatch');
